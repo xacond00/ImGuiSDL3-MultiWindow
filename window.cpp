@@ -160,6 +160,14 @@ std::tuple<unsigned char *, unsigned, unsigned> Window::get_surf() {
   }
   return {pixels, unsigned(pitch), height()};
 }
+
+void Window::set_surf() {
+  if (m_locked_surf && m_surf) {
+    SDL_UnlockTexture(m_surf);
+    m_locked_surf = false;
+  }
+}
+
 bool Window::resize(uint32_t width, uint32_t height) {
   if (height && width && height != m_height && width != m_width) {
     m_width = width;
@@ -173,6 +181,7 @@ bool Window::resize(uint32_t width, uint32_t height) {
   }
   return false;
 }
+
 void Window::free() {
   if (imgui()) {
     ImGui::SetCurrentContext(m_imgui_ctx);

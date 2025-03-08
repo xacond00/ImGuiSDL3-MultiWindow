@@ -38,12 +38,7 @@ public:
 
   std::tuple<unsigned char *, unsigned, unsigned> get_surf();
 
-  void set_surf() {
-    if (m_locked_surf && m_surf) {
-      SDL_UnlockTexture(m_surf);
-      m_locked_surf = false;
-    }
-  }
+  void set_surf();
 
   void close() {
     SDL_HideWindow(m_window);
