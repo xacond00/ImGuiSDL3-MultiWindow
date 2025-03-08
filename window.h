@@ -29,42 +29,14 @@ public:
 
   void render();
 
-  void free() {
-    if (imgui()) {
-      ImGui::SetCurrentContext(m_imgui_ctx);
-      ImGui_ImplSDLRenderer3_Shutdown();
-      ImGui_ImplSDL3_Shutdown();
-      ImGui::DestroyContext();
-    }
-    if (m_surf) {
-      SDL_DestroyTexture(m_surf);
-      m_surf = nullptr;
-    }
-    if (m_renderer) {
-      SDL_DestroyRenderer(m_renderer);
-      m_renderer = nullptr;
-    }
-    if (m_window) {
-      SDL_DestroyWindow(m_window);
-      m_window = nullptr;
-    }
-    m_closed = true;
-  }
+  void free();
 
   // Window dimensions
   uint32_t width() const { return m_width; }
   uint32_t height() const { return m_height; }
   std::pair<uint32_t, uint32_t> dims() const { return {m_width, m_height}; }
 
-  std::tuple<unsigned char *, unsigned, unsigned> get_surf() {
-    unsigned char *pixels = nullptr;
-    int pitch = 0;
-    if (!m_locked_surf && m_surf) {
-      SDL_LockTexture(m_surf, nullptr, (void **)&pixels, &pitch);
-      m_locked_surf = true;
-    }
-    return {pixels, unsigned(pitch), height()};
-  }
+  std::tuple<unsigned char *, unsigned, unsigned> get_surf();
 
   void set_surf() {
     if (m_locked_surf && m_surf) {
@@ -77,20 +49,8 @@ public:
     SDL_HideWindow(m_window);
     m_closed = true;
   }
-  
-  bool resize(uint32_t width, uint32_t height) {
-    if (height && width && height != m_height && width != m_width) {
-      m_width = width;
-      m_height = height;
-      if (m_surf) {
-        SDL_DestroyTexture(m_surf);
-        m_surf = SDL_CreateTexture(m_renderer, m_format,
-                                   SDL_TEXTUREACCESS_STREAMING, width, height);
-      }
-      return true;
-    }
-    return false;
-  }
+
+  bool resize(uint32_t width, uint32_t height);
 
   bool mouse_focus() const { return m_mouse_focus; }
   bool keyboard_focus() const { return m_keyboard_focus; }

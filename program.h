@@ -29,10 +29,10 @@ public:
       auto [pixels, height, pitch] = m_view.get_surf();
       for (uint32_t y = 0; y < height; y++) {
         for (uint32_t x = 0; x < pitch; x += 4) {
-            pixels[y * pitch + x] = 0; // b
-            pixels[y * pitch + x + 1] = 255; //g
-            pixels[y * pitch + x + 2] = 255; //r
-            pixels[y * pitch + x + 3] = 255; //a
+          pixels[y * pitch + x] = 0;       // b
+          pixels[y * pitch + x + 1] = 255; // g
+          pixels[y * pitch + x + 2] = 255; // r
+          pixels[y * pitch + x + 3] = 255; // a
         }
       }
       m_view.set_surf();
